@@ -12,6 +12,8 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
 
     boolean existsByCode(String code);
 
+    java.util.Optional<Equipment> findByCode(String code);
+
     /**
      * 多条件可选筛选：实验室 / 类别 / 状态 / 关键字（名称或编号），传 null 表示该条件不参与。
      */

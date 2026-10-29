@@ -77,11 +77,6 @@ async function submit() {
           </button>
         </form>
         <p class="switch">还没有账号？<router-link to="/register">立即注册</router-link></p>
-        <div class="hint">
-          演示账号<br />
-          管理员：<b>admin / admin123</b><br />
-          学生：<b>student / 123456</b>
-        </div>
       </div>
     </div>
   </div>

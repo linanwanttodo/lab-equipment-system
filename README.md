@@ -37,7 +37,46 @@ demo/
 
 ## 快速开始
 
-### 方式一：单网址启动（推荐）
+### 方式零：一键运行（最简单）
+
+```bash
+./run.sh          # Linux / macOS
+run.bat           # Windows（双击或在命令行执行）
+```
+
+脚本会自动检查前端构建产物（缺失则自动构建），然后启动后端，浏览器打开 **http://localhost:8080** 即可使用。
+
+### 数据库初始化
+
+应用**首次启动会自动建库建表并写入演示数据**（JPA 自动建表 + 内置种子数据），无需手动执行 SQL。
+
+如需手工初始化（或重置数据库），执行：
+
+```bash
+mysql -u root -p < sql/init.sql
+```
+
+`sql/init.sql` 可重复执行（建库建表均为 IF NOT EXISTS，种子数据防重复），包含：
+
+- 建库 `lab_equipment`（utf8mb4）
+- 四张表：`users` / `labs` / `equipments` / `loans`（含外键约束）
+- 演示数据：6 个账号（1 管理员 + 5 学生，学生密码统一 `123456`）、4 个实验室、17 台设备、5 条借用记录样例（借用中 / 已归还 / 即将逾期各若干，其中一条已超期，启动后由定时任务自动标记逾期并触发提醒）
+
+应用首次启动时通过内置初始化器写入**同一套演示数据**（与 `sql/init.sql` 一致），两种方式任选其一即可。
+
+数据库连接配置在 `src/main/resources/application.yml`，按本机环境修改：
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/lab_equipment?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+    username: root
+    password: "123456"   # 改成本机 MySQL 密码
+```
+
+> 免装 MySQL 快速演示可改用 H2：启动参数加 `--spring.datasource.url="jdbc:h2:mem:demo;MODE=MySQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE" --spring.datasource.username=sa --spring.datasource.password= --spring.datasource.driver-class-name=org.h2.Driver`
+
+### 方式一：单网址启动
 
 前端页面已打包集成进 Spring Boot，一条命令即可获得完整系统（客户端页面与后台接口同一个地址）：
 
@@ -47,8 +86,6 @@ mvn spring-boot:run
 
 浏览器打开 **http://localhost:8080** 即可使用。
 
-> - 数据库默认 MySQL：URL 已带 `createDatabaseIfNotExist=true` 会自动建库，请按本机环境修改 `application.yml` 里的用户名密码。
-> - 免装 MySQL 快速演示可改用 H2：启动参数加 `--spring.datasource.url="jdbc:h2:mem:demo;MODE=MySQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE" --spring.datasource.username=sa --spring.datasource.password= --spring.datasource.driver-class-name=org.h2.Driver`
 > - 修改前端后重新集成：`cd frontend && npm run build:deploy`（构建并同步到后端静态资源），然后重启后端。
 
 ### 方式二：前后端分离开发（前端热更新）
