@@ -1,0 +1,24 @@
+{
+  "name": "lab-equipment-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "build:deploy": "npm run build && rm -rf ../src/main/resources/static && mkdir -p ../src/main/resources/static && cp -r dist/* ../src/main/resources/static/",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "pinia": "^3.0.1",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "typescript": "~5.7.2",
+    "vite": "^5.4.10",
+    "vue-tsc": "^2.1.10"
+  }
+}

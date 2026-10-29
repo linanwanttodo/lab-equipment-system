@@ -1,0 +1,50 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: lab-equipment-demo
+
+  datasource:
+    # MySQL 8 —— 请按本机环境修改 username / password
+    # createDatabaseIfNotExist=true 会在首次连接时自动建库（需相应权限）
+    url: jdbc:mysql://localhost:3306/lab_equipment?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+    username: root
+    password: "123456"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      # 课设阶段用 update 自动建表；上线请改为 validate
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  mail:
+    # 逾期邮件提醒。默认关闭，避免无 SMTP 时运行报错。
+    # 配置好真实 SMTP 后把 app.mail.enabled 设为 true 即可启用邮件。
+    host: smtp.example.com
+    port: 587
+    username: your-email@example.com
+    password: your-smtp-password
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+app:
+  jwt:
+    # 生产环境务必更换为随机长密钥（>= 32 字节）
+    secret: "lab-equipment-demo-jwt-secret-key-change-me-in-prod-0123456789"
+    ttl-minutes: 720
+  mail:
+    enabled: false
+    from: "noreply@example.com"
+  cors:
+    allowed-origins: "http://localhost:5173,http://127.0.0.1:5173"
