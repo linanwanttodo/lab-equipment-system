@@ -46,6 +46,31 @@ run.bat           # Windows（双击或在命令行执行）
 
 脚本会自动检查前端构建产物（缺失则自动构建），然后启动后端，浏览器打开 **http://localhost:8080** 即可使用。
 
+> 脚本只做环境检查，不会自动安装依赖。缺失时会提示并退出（Java 21 / Maven 必需；Node.js 可选，仅在前端产物缺失时才需要）。
+
+### 方式零点五：直接运行 jar（虚拟机 / 服务器部署推荐）
+
+仓库 `release/` 目录内置了**已打包好前端页面的可执行 jar**，虚拟机上只需要 **Java 21 + MySQL 8**，无需 Node.js 和 Maven：
+
+```bash
+# 1. 下载或克隆本仓库，进入 release/ 目录
+cd release
+
+# 2. 启动（数据库连接配置见下方说明，需与虚拟机 MySQL 一致）
+java -jar demo-1.0-SNAPSHOT.jar
+```
+
+浏览器打开 **http://localhost:8080** 即可使用。如需外部访问或修改配置，可通过启动参数覆盖：
+
+```bash
+java -jar demo-1.0-SNAPSHOT.jar \
+  --server.address=0.0.0.0 \
+  --spring.datasource.username=root \
+  --spring.datasource.password=你的密码
+```
+
+> jar 内嵌了完整前端页面，一条命令就是完整系统。虚拟机上记得放行 8080 端口（如 `ufw allow 8080` / 云平台安全组规则）。
+
 ### 数据库初始化
 
 应用**首次启动会自动建库建表并写入演示数据**（JPA 自动建表 + 内置种子数据），无需手动执行 SQL。
