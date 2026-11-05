@@ -38,7 +38,6 @@ build/
 ### 前端 ###
 frontend/node_modules/
 frontend/dist/
-src/main/resources/static/
 
 ### 发布产物（release/ 下的 jar 纳入版本管理） ###
 /release/*.original
